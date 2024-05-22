@@ -1,0 +1,295 @@
+\documentclass{beamer}
+
+% If you use the optional handout parameter below, none of the pauses between slides are printed.  Only one of these first two lines should be used at a time.
+% \documentclass[handout]{beamer}
+
+\setbeamertemplate{navigation symbols}{}
+
+\usepackage{amsmath, amsthm, amssymb, upgreek, amscd, verbatim, xcolor}
+\usepackage{centernot}
+\usepackage{datetime}
+\usepackage{fontspec}
+\usepackage[slantfont, boldfont]{xeCJK}
+\usepackage{graphicx} 
+\usepackage{float} 
+\usepackage{subfigure}
+\usepackage{tikz}
+\usepackage{unicode-math} 
+\usepackage{extarrows}
+
+\usetheme{Madrid}
+\usecolortheme{seahorse}
+\setbeamertemplate{items}[circle]
+\usepackage{graphicx}
+
+% Use the XITS font
+\setmathfont{XITSMath-Regular}
+\setmainfont{XITSMath-Regular}
+\setsansfont{XITSMath-Regular}
+\setmonofont{XITSMath-Regular}
+
+\setCJKmainfont{SimSun}[BoldFont=SimHei, ItalicFont=KaiTi]
+
+% File matadata
+\newcommand{\DocumentTitle}{浅谈递推关系的常见求解方法}
+\newcommand{\DocumentAuthor}{胡顾笑、张溥原、欧嘉欢、朱师彤}
+
+\hypersetup{
+pdftitle={\DocumentTitle},
+% pdfsubject={lorem ipsum},  % TODO
+pdfauthor={\DocumentAuthor}, 
+% pdfkeywords={lorem ipsum}  % TODO
+}
+
+%New Commands
+\newcommand{\ssm}{\,{}^\smallsetminus\,}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\F}{\mathbb{F}}
+
+%Date
+\newdateformat{mydate}{\THEDAY \ \monthname[\THEMONTH] \THEYEAR}
+
+\begin{document}
+\title{\textbf\DocumentTitle}
+\author[国际课程班高一下数学小组展示]{\DocumentAuthor}
+\date{\mydate\today}
+
+\maketitle
+
+\section{数列与递推关系简介}
+
+\begin{frame}{递推关系}
+    在本学期“数列”章节中，我们学到了使用\textbf{递推关系}描述的数列。
+    \begin{definition}
+        \textbf{递推关系}是一种递推地定义一个序列的方程式：序列的每一项是定义为前若干项的函数。它是一种\textbf{差分方程}。
+    \end{definition}
+    \begin{example}[Fibonacci 数列的递推形式]
+        \begin{displaymath}
+            F_i = \begin{cases} 
+                1 & i=0,1\\
+                F_{i-1} + F_{i-2} & i\geqslant 2
+              \end{cases}
+        \end{displaymath}
+
+        根据递推式，可以得出其前几项为
+        $$
+        \{1,1,2,3,5,8,13,\cdots\}
+        $$
+    \end{example}
+\end{frame}
+
+\begin{frame}{递推关系的解}
+    \begin{definition}
+        求一个递推关系的关于下标 $i$ 的非递推函数的过程，叫做求这个递推关系的\textbf{解析解}，也叫求这个递推序列的\textbf{解}。
+    \end{definition}
+    \begin{example}[Fibonacci 数列的解析解]
+        我们熟知，
+        $$
+            F_i = \frac{1}{\sqrt 5} \phi^i - \frac{1}{\sqrt 5} {\hat\phi}^i = \left\lfloor\frac12+\frac{1}{\sqrt 5}\phi^i\right\rfloor
+        $$
+        (其中，$\phi$、$\hat\phi$ 是方程 $x^2 - x - 1 = 0$ 的两根，$\phi \xlongequal{\text{def}} \frac{1 + \sqrt 5}{2}\approx 1.618$)
+        % (其中，$\phi \xlongequal{\text{def}} \frac{1 + \sqrt 5}{2} \approx 1.618$。$\hat\phi$ 是 $\phi$ 的\textbf{共轭}。下同)
+    \end{example}
+\end{frame}
+
+\begin{frame}{引入}
+    \begin{itemize}
+        \item 我们已经学过求解递推关系的基本方法：先猜出递推关系的解，再施\textbf{数学归纳法}证明。
+        \item 对于一些特殊的递推关系，有一些方法可以简便地求解。
+    \end{itemize}
+\end{frame}
+
+\section{从生成函数到特征方程}
+
+\begin{frame}{生成函数}
+    我们希望将递推关系描述成我们熟知的多项式函数，或\textbf{幂级数}，同时用一种简洁的方式保留这个数列的所有信息。因此引入\textbf{生成函数}的概念。
+    \begin{definition}
+        定义无穷数列 $\{a_\infty\}$ 的\textbf{生成函数}为：
+        $$
+            g(x) = \sum_{i=0}^\infty a_ix^i
+        $$
+    \end{definition}
+    \pause
+    \begin{itemize}
+        \item 生成函数实际上是将这个数列映射到一个 $x$ 进制数。
+        \item 作为如此熟悉的代数对象，生成函数自然很适合使用我们熟悉的代数方法处理。例如，$g(x)$ 任意阶可导。
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{特征方程}
+    特征方程是处理常系数线性齐次递推式的方法。
+
+    得到生成函数的启发，我们希望能简单地将数列 $\{a_\infty\}$ 的通项公式表达为 $a_i = q^i$。
+    \pause
+    \begin{block}{Exercise}
+        可以使用生成函数的方法证明其正确性，留作思考。
+    \end{block}
+\end{frame}
+
+\begin{frame}{特征方程}
+    % 我们不加证明地给出以下定理：
+    \begin{theorem}[特征方程与特征根]
+        设 $q \ne 0$，则 $h_n = q^n$ 为以下常系数 ($\{a_n\}$) 线性齐次递推式
+        $$
+            h_n - a_1h^{n-1} - a_2h^{n-2} - \cdots - a_kh^{n-k} = 0 
+        $$
+        的解，当且仅当 $q$ 是方程
+        $$
+            x^k - a_1x^{k-1}-a_2x^{k-2}-\cdots-a_k = 0
+        $$
+        的根。称上式为 $\{h_n\}$ 的\textbf{特征方程}，该方程的根称为 $\{h_n\}$ 的\textbf{特征根}。
+    \end{theorem}
+\end{frame}
+
+\begin{frame}{特征方程}
+    \begin{theorem}[常系数线性非齐次递推关系式的通解]
+        根据\textbf{代数基本定理}，$k$ 阶常系数线性齐次递推关系在 $\mathbb C$ 上有 $k$ 个特征根 (含重根)。若有 $m \le k$ 个相异的复根，则
+        $$
+            h_n = \sum_{i=1}^m C_iq_i^n
+        $$
+        为这个常系数线性齐次递推关系的\textbf{通解}。
+    \end{theorem}
+\end{frame}
+
+\section{求解常系数线性齐次递推关系式}
+
+\begin{frame}{常系数线性齐次递推关系式}
+    \begin{definition}
+        若数列 $\{f_\infty\}$ 的递推关系式满足：
+        \begin{itemize}
+            \item 线性。$\deg_{f_j} (f_i) \leqslant 1$ ($j < i$)。(但系数与常数不一定需要关于 $i$ 线性)
+            \item 齐次。关系式的常数项为 0。
+        \end{itemize}
+        则称其为\textbf{常系数线性齐次递推关系式}。
+    \end{definition}    
+\end{frame}
+
+\begin{frame}{例题：广义 Fibonacci 数列}
+    \begin{definition}
+        一种\textbf{广义 Fibonacci 数列}由如下递推式定义：
+        \begin{displaymath}
+            F_i = \begin{cases} 
+                A & i=0\\
+                B & i=1\\
+                \alpha F_{i-1} + \beta F_{i-2} & i\geqslant 2
+              \end{cases}
+        \end{displaymath}
+        (其中 $A$、$B$ 为常数)
+        
+        尝试求解这个递推式。
+    \end{definition}    
+\end{frame}
+
+\begin{frame}{例题：广义 Fibonacci 数列}
+    \begin{solution}
+        数列的特征方程为
+        $$
+        x^2 - \alpha x - \beta = 0 \Longrightarrow x_{1,2} = \frac{\alpha \pm \sqrt{\alpha^2 + 4\beta}}{2}
+        $$
+        \pause
+        因此，该递推式解为
+        $$
+        F_i = C_1 \left(\frac{\alpha + \sqrt{\alpha^2 + 4\beta}}{2}\right)^i + C_2 \left(\frac{\alpha - \sqrt{\alpha^2 + 4\beta}}{2}\right)^i
+        $$
+        验证这个解。令 $A = B = \alpha = \beta = 1$，递推式的解变成了\textbf{斐波那契数列}的通项公式。
+    \end{solution}
+
+\end{frame}
+
+\begin{frame}{思考题}
+    作为习题，请思考如何使用生成函数法求解斐波那契数列的递推式。(提示：先解出生成函数 $g(x)$，再使用一些代数技巧化成通项公式的形式)
+\end{frame}
+
+\section{求解常系数线性非齐次递推关系式}
+
+\begin{frame}{常系数线性非齐次递推关系式}
+    若常系数线性递推关系式中存在常数项，则称其为\textbf{常系数线性非齐次递推关系式}。
+    \pause
+    \begin{example}[Hanoi 问题]
+        求解递推式
+        \begin{displaymath}
+            H_i = \begin{cases} 
+                0 & i=0\\
+                2H_{i-1} + 1 & i\geqslant 1
+              \end{cases}
+        \end{displaymath}
+        ($H_n$ 表示求解 $n$ 层\textbf{汉诺塔}游戏的最小移动步数)
+    \end{example}
+    \pause
+    \begin{block}{Exercise (期末考试押题)}
+        尝试猜出这个递推式的解并施数学归纳法证明。
+    \end{block}
+\end{frame}
+
+\begin{frame}{例题：Hanoi 问题}
+    \begin{solution}
+        令 
+        $$
+        g(x) = \sum_{i=0}^\infty H_ix^i
+        $$ 
+        为 $\{H_\infty\}$ 的生成函数。
+        \pause
+        将两边同时乘以 $2x$，得到
+        $$
+        2xg(x) = \sum_{i=0}^\infty 2H_ix^{i+1}
+        $$
+        \pause
+        两式相减，回顾 $H_i$ 的递推定义，解得
+        $$
+            g(x) = \frac{\sum_{i=1}^\infty x^i}{1-2x}
+        $$
+    \end{solution}
+\end{frame}
+
+\begin{frame}{Hanoi 问题}
+    \begin{solution}
+        \begin{displaymath}
+            \begin{aligned}
+                g(x) &= \frac{\sum_{i=1}^\infty x^i}{1-2x} \\
+                &= \frac{x}{(1-x)(1-2x)}\\
+                &= \frac{1}{1-2x} - \frac{1}{1-x}\\
+                &= \sum_{i=1}^\infty (2x)^i - \sum_{i=1}^\infty x^i\\
+                &= \sum_{i=1}^\infty (2^i - 1)x^i
+            \end{aligned}
+        \end{displaymath}
+        因此，$\{H_\infty\}$ 的通项公式为
+        $$
+            H_i = 2^i - 1
+        $$
+    \end{solution}
+\end{frame}
+
+\section{拓展与思考}
+
+\begin{frame}{彩蛋：其它视角下的递推问题}
+    以下问题对于解决各种递推问题有一定帮助，但超出了本次展示讨论的范围，有兴趣可自行了解。
+    \pause
+    \begin{itemize}
+        \item 有的时候，我们不需要得出递推关系的解就能足够快地求出某项的信息。
+        
+                一些计算机课程会介绍几种技巧加速递推的过程。例如对于常系数线性齐次递推常使用矩阵乘法，利用幂运算的结合律使用\textbf{平方法}简化运算数量。
+        \begin{displaymath}
+            \begin{bmatrix}
+                f_n & f_{n-1} & \cdots & f_{n-k}
+               \end{bmatrix} = \begin{bmatrix}
+                f_k & f_{k-1} & \cdots & f_{0}
+               \end{bmatrix} \times (\boldsymbol{A}_{k\times k})^n
+        \end{displaymath}
+        \pause
+        \item 在展示的开头，我们强调过递推关系是一种差分方程。精通微积分的同学可以尝试将 $n$ 阶递推关系看作 $n$ 阶微分方程。事实上，两者的本质几乎相同。
+        
+            有兴趣的同学可以研究微积分中的工具在求解递推式时的应用，例如\textbf{欧拉法 (Euler's method)}。
+    \end{itemize}
+\end{frame}
+
+\section{致谢}
+
+\begin{frame}{Thanks}
+    \begin{center}
+        \Huge{谢谢！}
+    \end{center}
+\end{frame}
+\end{document}
