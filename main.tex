@@ -16,11 +16,12 @@
 \usepackage{tikz}
 \usepackage{unicode-math} 
 \usepackage{extarrows}
+\usepackage{graphicx}
+
 
 \usetheme{Madrid}
 \usecolortheme{seahorse}
 \setbeamertemplate{items}[circle]
-\usepackage{graphicx}
 
 % Use the XITS font
 \setmathfont{XITSMath-Regular}
@@ -88,16 +89,16 @@ pdfauthor={\DocumentAuthor},
     \begin{example}[Fibonacci 数列的解析解]
         我们熟知，
         $$
-            F_i = \frac{1}{\sqrt 5} \phi^i - \frac{1}{\sqrt 5} {\hat\phi}^i = \left\lfloor\frac12+\frac{1}{\sqrt 5}\phi^i\right\rfloor
+            F_i = \frac{\sqrt 5}{5} \phi^i - \frac{\sqrt 5}{5} {\hat\phi}^i \xlongequal{\text{some tricks...}} \left\lfloor\frac12+\frac{\sqrt 5}{5} \phi^i\right\rfloor
         $$
         (其中，$\phi$、$\hat\phi$ 是方程 $x^2 - x - 1 = 0$ 的两根，$\phi \xlongequal{\text{def}} \frac{1 + \sqrt 5}{2}\approx 1.618$)
-        % (其中，$\phi \xlongequal{\text{def}} \frac{1 + \sqrt 5}{2} \approx 1.618$。$\hat\phi$ 是 $\phi$ 的\textbf{共轭}。下同)
     \end{example}
 \end{frame}
 
 \begin{frame}{引入}
     \begin{itemize}
         \item 我们已经学过求解递推关系的基本方法：先猜出递推关系的解，再施\textbf{数学归纳法}证明。
+        \pause
         \item 对于一些特殊的递推关系，有一些方法可以简便地求解。
     \end{itemize}
 \end{frame}
@@ -114,7 +115,8 @@ pdfauthor={\DocumentAuthor},
     \end{definition}
     \pause
     \begin{itemize}
-        \item 生成函数实际上是将这个数列映射到一个 $x$ 进制数。
+        \item 生成函数实际上将这个无穷数列映射到了一个无限位的 $x$ 进制数。
+        \pause
         \item 作为如此熟悉的代数对象，生成函数自然很适合使用我们熟悉的代数方法处理。例如，$g(x)$ 任意阶可导。
     \end{itemize}
 \end{frame}
@@ -125,6 +127,8 @@ pdfauthor={\DocumentAuthor},
     得到生成函数的启发，我们希望能简单地将数列 $\{a_\infty\}$ 的通项公式表达为 $a_i = q^i$。
     \pause
     \begin{block}{Exercise}
+        \textit{``是怎么想到将数列的项简单地表达为关于下标的幂函数的??''}
+
         可以使用生成函数的方法证明其正确性，留作思考。
     \end{block}
 \end{frame}
@@ -161,9 +165,13 @@ pdfauthor={\DocumentAuthor},
         若数列 $\{f_\infty\}$ 的递推关系式满足：
         \begin{itemize}
             \item 线性。$\deg_{f_j} (f_i) \leqslant 1$ ($j < i$)。(但系数与常数不一定需要关于 $i$ 线性)
-            \item 齐次。关系式的常数项为 0。
+            \item 齐次。这个递推式的数列项的次数一致。
         \end{itemize}
         则称其为\textbf{常系数线性齐次递推关系式}。
+        \pause
+        \begin{itemize}
+            \item 换句话说，线性齐次关系式  $\Leftrightarrow$  同时满足：\textbf{线性、常数项为 0}。
+        \end{itemize}
     \end{definition}    
 \end{frame}
 
@@ -177,7 +185,7 @@ pdfauthor={\DocumentAuthor},
                 \alpha F_{i-1} + \beta F_{i-2} & i\geqslant 2
               \end{cases}
         \end{displaymath}
-        (其中 $A$、$B$ 为常数)
+        (其中 $A$、$B$、$\alpha$、$\beta$ 为常数)
         
         尝试求解这个递推式。
     \end{definition}    
@@ -194,7 +202,11 @@ pdfauthor={\DocumentAuthor},
         $$
         F_i = C_1 \left(\frac{\alpha + \sqrt{\alpha^2 + 4\beta}}{2}\right)^i + C_2 \left(\frac{\alpha - \sqrt{\alpha^2 + 4\beta}}{2}\right)^i
         $$
-        验证这个解。令 $A = B = \alpha = \beta = 1$，递推式的解变成了\textbf{斐波那契数列}的通项公式。
+        验证这个解。令 $A = B = \alpha = \beta = 1$，解得
+        \begin{displaymath}
+            C_1 = \frac{\sqrt 5}{5}, C_2 = -\frac{\sqrt 5}{5}
+        \end{displaymath}
+        递推式的解变成了\textbf{斐波那契数列}的通项公式。这个解是正确的。
     \end{solution}
 
 \end{frame}
@@ -216,7 +228,7 @@ pdfauthor={\DocumentAuthor},
                 2H_{i-1} + 1 & i\geqslant 1
               \end{cases}
         \end{displaymath}
-        ($H_n$ 表示求解 $n$ 层\textbf{汉诺塔}游戏的最小移动步数)
+        ($H_n$ 表示求解 $n$ 层\textbf{汉诺塔}游戏的最小移动步数，感兴趣的观众可自行了解)
     \end{example}
     \pause
     \begin{block}{Exercise (期末考试押题)}
@@ -268,20 +280,25 @@ pdfauthor={\DocumentAuthor},
     以下问题对于解决各种递推问题有一定帮助，但超出了本次展示讨论的范围，有兴趣可自行了解。
     \pause
     \begin{itemize}
-        \item 有的时候，我们不需要得出递推关系的解就能足够快地求出某项的信息。
+        \item   有的时候，对于一些特殊的递推关系，我们不需要得出递推关系的解就能足够快地求出某项的信息。
+                \begin{example}
+                    欲求常系数线性齐次递推数列的第 $n$ 项，我们可以根据系数构造 $k$ 阶矩阵 $\boldsymbol A$，利用幂运算的结合律使用\textbf{平方法}简化运算数量，就能在一定规模的数据下足够快地计算。
+                    \begin{displaymath}
+                        \begin{bmatrix}
+                            f_n & f_{n-1} & \cdots & f_{n-k}
+                        \end{bmatrix} = \begin{bmatrix}
+                            f_k & f_{k-1} & \cdots & f_{0}
+                        \end{bmatrix} \times (\boldsymbol{A}_{k\times k})^n
+                    \end{displaymath}
+                \end{example}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{彩蛋：其它视角下的递推问题}
+    \begin{itemize}
+        \item   我们强调过递推关系是一种差分方程。可以尝试将 $n$ 阶递推关系看作 $n$ 阶微分方程。这两者之间具有紧密的联系。
         
-                一些计算机课程会介绍几种技巧加速递推的过程。例如对于常系数线性齐次递推常使用矩阵乘法，利用幂运算的结合律使用\textbf{平方法}简化运算数量。
-        \begin{displaymath}
-            \begin{bmatrix}
-                f_n & f_{n-1} & \cdots & f_{n-k}
-               \end{bmatrix} = \begin{bmatrix}
-                f_k & f_{k-1} & \cdots & f_{0}
-               \end{bmatrix} \times (\boldsymbol{A}_{k\times k})^n
-        \end{displaymath}
-        \pause
-        \item 在展示的开头，我们强调过递推关系是一种差分方程。精通微积分的同学可以尝试将 $n$ 阶递推关系看作 $n$ 阶微分方程。事实上，两者的本质几乎相同。
-        
-            有兴趣的同学可以研究微积分中的工具在求解递推式时的应用，例如\textbf{欧拉法 (Euler's method)}。
+                有兴趣的同学可以研究微积分中的工具在求解递推式时的应用，例如\textbf{欧拉法 (Euler's method)}。 
     \end{itemize}
 \end{frame}
 
@@ -289,7 +306,10 @@ pdfauthor={\DocumentAuthor},
 
 \begin{frame}{Thanks}
     \begin{center}
-        \Huge{谢谢！}
+        {\Huge{谢谢！}}
+    \end{center}
+    \begin{center}
+        Full \LaTeX\ Source Code is available on GitHub \\ (\href{https://github.com/ret2libc-pwned/10b-math-pre/}{ret2libc-pwned/10b-math-pre})\\ Please Star US!
     \end{center}
 \end{frame}
 \end{document}
